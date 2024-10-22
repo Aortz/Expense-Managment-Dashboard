@@ -1,0 +1,8 @@
+/BankOCR
+/Training Data
+/Banks/*/CSV
+/Banks/*/PDF
+/Banks/uploads
+/Frontend/frontend/node_modules
+/Frontend/frontend/build
+/Classifier/results
