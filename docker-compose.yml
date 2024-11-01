@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  pdf_converter_service:
+    build:
+      context: ./Banks
+      dockerfile: Dockerfile
+    container_name: pdf_converter_service
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/pdfdata
+    networks:
+      - app-network
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./Banks:/app
+
+  frontend_service:
+    build:
+      context: ./Frontend/frontend
+      dockerfile: Dockerfile.dev
+    container_name: frontend_service
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_PDF_TO_CSV_URL=http://localhost:5000/convert
+      - REACT_APP_API_URL=http://localhost:5000
+    volumes:
+      - ./Frontend/frontend:/app
+      - /app/node_modules
+    networks:
+      - app-network
+    depends_on:
+      - pdf_converter_service
+      - db
+
+  db:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: pdfdata
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+volumes:
+  pgdata:
+
+networks:
+  app-network:
+    driver: bridge

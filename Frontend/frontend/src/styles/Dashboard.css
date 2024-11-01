@@ -1,0 +1,25 @@
+body {
+    font-family: 'Avenir', 'Satisfy', cursive;
+  }
+  
+  .summary-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .summary-box {
+    flex-basis: calc(50% - 10px);
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .summary-box:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+  }
+  
+  /* Add more styles as needed */

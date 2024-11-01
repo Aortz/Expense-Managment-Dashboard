@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  pdf_converter_service:
+    build:
+      context: ./Banks
+      dockerfile: Dockerfile.prod
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/pdfdata
+    ports:
+      - "5000:5000"
+
+  frontend_service:
+    build:
+      context: ./Frontend/frontend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "80:80"
+    environment:
+      - REACT_APP_PDF_TO_CSV_URL=http://pdf_converter_service:5000/convert
+      - REACT_APP_API_URL=http://pdf_converter_service:5000
+
+  db:
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: pdfdata
